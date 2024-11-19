@@ -1,19 +1,39 @@
 ---
-
+ 
 - hosts: all
   become: true
   tasks:
 
-  - name: update repo index
+  - name: update repository index for Ubuntu
     apt:
       update_cache: yes
-
-  - name: install apache2 package
+    when: ansible_distribution == "Ubuntu"
+ 
+  - name: install apache2 package for Ubuntu
     apt:
       name: apache2
       state: latest
-
-  - name: add php support for apache
+    when: ansible_distribution == "Ubuntu"
+ 
+  - name: add php support for apache for Ubuntu
     apt:
       name: libapache2-mod-php
       state: latest
+    when: ansible_distribution == "Ubuntu"
+ 
+  - name: update repository index for RedHat
+    dnf:
+      update_cache: yes
+    when: ansible_distribution == "RedHat"
+ 
+  - name: install httpd package for RedHat
+    dnf:
+      name: httpd
+      state: latest
+    when: ansible_distribution == "RedHat"
+ 
+  - name: add php support for apache for RedHat
+    dnf:
+      name: php
+      state: latest
+    when: ansible_distribution == "RedHat"
