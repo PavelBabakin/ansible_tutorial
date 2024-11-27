@@ -4,19 +4,29 @@
   become: true
   pre_tasks:
 
-  - name: install updates (RedHat)
+  - name: update repo cache (RedHat)
     tags: always
     dnf:
-      update_only: yes
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "RedHat"
 
-  - name: install updates (Ubuntu)
+  - name: update repo cache (Ubuntu)
     tags: always
     apt:
-      upgrade: dist
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: add ssh key for simone
+    tags: always
+    authorized_key:
+      user: simone
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG63d9uOtvXntvix/85i1Map4VwiyA0wMX+SzQp78ndT ansible"
 
 - hosts: workstations
   become: true
